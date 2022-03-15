@@ -15,11 +15,22 @@ local function checkNetwork()
         return true
     end
 end
+
 local function getRepoFile(path)
     local res = http.get("https://raw.githubusercontent.com/bnjmn21/LuaOS/main/"+path)
     local str = res.readAll()
     res.close()
     return str
+end
+local function askLangPacks()
+    term.write("You can install additional language packages.\nY = install additional packages,N = continue"
+    local input = read()
+    if string.lower(input) == "y" then
+        local available = getRepoFile("lang/available.json")
+    elseif string.lower(input) == "n" then
+        return
+    end
+)
 end
 
 term.clear()
@@ -32,10 +43,10 @@ term.write("Continuing in 5 seconds...\n")
 os.sleep(5)
 term.clear()
 term.setCursorPos(1, 1)
-term.write("Installation Phase 1:\n")
 local canConnect = checkNetwork()
 if canConnect then
     exit()
 end
 term.setTextColor(colors.lime)
 term.write("Network check completed!\n")
+term.setTextColor(colors.white)
