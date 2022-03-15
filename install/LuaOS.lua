@@ -22,16 +22,6 @@ local function getRepoFile(path)
     res.close()
     return str
 end
-local function askLangPacks()
-    term.write("You can install additional language packages.\nY = install additional packages,N = continue"
-    local input = read()
-    if string.lower(input) == "y" then
-        local available = getRepoFile("lang/available.json")
-    elseif string.lower(input) == "n" then
-        return
-    end
-)
-end
 
 term.clear()
 term.setCursorPos(1, 1)
@@ -50,3 +40,5 @@ end
 term.setTextColor(colors.lime)
 term.write("Network check completed!\n")
 term.setTextColor(colors.white)
+term.write("Installation Phase 1:\n")
+term.setTestColor(colors.lime)
