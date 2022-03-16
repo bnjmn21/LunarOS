@@ -1,7 +1,6 @@
 buttons = {}
 
 local function draw(options, display)
-    display.setCursorPos(options["x"],options["y"])
     display.setBackgroundColor(options["BG"])
     display.setTextColor(options["FG"])
 
@@ -36,6 +35,10 @@ local function draw(options, display)
         for i in pairs(vFormatTxt) do
             hFormatTxt = vFormatTxt..string.rep(" ",options["dx"]-string.len(vFormatTxt[i]))
         end
+    end
+    for i in pairs(hFormatTxt) do
+        display.setCursorPos(options["x"],options["y"]+i-1)
+        display.write(hFormatTxt[i])
     end
 end
 table.insert(buttons, draw, "draw")
