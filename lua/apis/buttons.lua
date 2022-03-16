@@ -41,4 +41,16 @@ local function draw(options, display)
         display.write(hFormatTxt[i])
     end
 end
+
+local function checkPress(btn,x,y,fn)
+    local pressed = x >= btn["x"] and x <= btn["x"]+btn["dx"] and y >= btn["y"] and y <= btn["y"]+btn["dy"]
+    if pressed then
+        if fn then btn["onPress"](btn["ID"]) end
+        return true
+    else
+        return false
+    end
+end
+
 table.insert(buttons, draw, "draw")
+table.insert(buttons, checkPress, "checkPress")
