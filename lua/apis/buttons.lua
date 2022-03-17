@@ -1,8 +1,8 @@
 buttons = {}
 
 local function draw(options, display)
-    display.setBackgroundColor(options["BG"])
-    display.setTextColor(options["FG"])
+    if options["BG"] then display.setBackgroundColor(options["BG"]) else display.setBackgroundColor(colors.black) end
+    if options["FG"] then display.setTextColor(options["FG"]) else display.setTextColor(colors.white) end
 
     local unformatTxt = {}
     local subStrStart = 1
