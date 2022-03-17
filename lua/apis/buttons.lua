@@ -33,7 +33,7 @@ local function draw(options, display)
         end
     else
         for i in pairs(vFormatTxt) do
-            hFormatTxt = vFormatTxt..string.rep(" ",options["dx"]-string.len(vFormatTxt[i]))
+            hFormatTxt[i] = vFormatTxt[i]..string.rep(" ",options["dx"]-string.len(vFormatTxt[i]))
         end
     end
     for i in pairs(hFormatTxt) do
