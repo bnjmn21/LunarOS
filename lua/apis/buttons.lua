@@ -52,5 +52,5 @@ local function checkPress(btn,x,y,fn)
     end
 end
 
-table.insert(buttons, draw, "draw")
-table.insert(buttons, checkPress, "checkPress")
+table.insert(buttons, "draw", draw)
+table.insert(buttons, "checkPress", checkPress)
