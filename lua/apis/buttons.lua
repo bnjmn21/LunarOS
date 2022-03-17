@@ -28,7 +28,7 @@ local function draw(options, display)
         local btnMid = math.floor(options["dx"]/2)
         for i in pairs(vFormatTxt) do
             strMid = math.floor(string.len(vFormatTxt[i])/2)
-            offset = bntMid - strMid
+            offset = btnMid - strMid
             hFormatTxt[i] = string.rep(" ",offset)..vFormatTxt[i]..string.rep(" ",options["dx"]-(string.len(vFormatTxt[i])+offset))
         end
     else
