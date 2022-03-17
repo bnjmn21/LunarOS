@@ -51,5 +51,5 @@ local function checkPress(btn,x,y,fn)
         return false
     end
 end
-buttons["draw"] = draw^
+buttons["draw"] = draw
 buttons["checkPress"] = checkPress
