@@ -23,6 +23,11 @@ local function getRepoFile(path)
     return str
 end
 
+local function saveFile(str,path)
+    local handle = fs.open(path,"w")
+    handle.write(str)
+    handle.close()
+
 term.clear()
 term.setCursorPos(1, 1)
 term.write("\n\n\n")
