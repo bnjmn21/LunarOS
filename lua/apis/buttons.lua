@@ -22,7 +22,7 @@ local function draw(options, display)
     local hFormatTxt = {}
     if options["allignH"] == "right" then
         for i in pairs(vFormatTxt) do
-            hFormatTxt[i] = string.rep(" ",options["dx"]-string.len(vFormatTxt[i]))
+            hFormatTxt[i] = string.rep(" ",options["dx"]-string.len(vFormatTxt[i]))..unformatTxt[i]
         end
     elseif options["allignH"] == "center" then
         btnMid = math.floor(options["dx"]/2)
