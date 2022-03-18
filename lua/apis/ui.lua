@@ -19,6 +19,7 @@
 --      FG
 --      contextFG
 --      context         the text to show when no text was entered (e.g. 'password:')
+--      maxChar
 --      input           the entered text(used internally)
 --      active          whether textbox is selected(used internally)
 --  t=DROPDOWN
@@ -34,7 +35,7 @@
 --      active          wether dropdown is shown(used internally)
 ui = {}
 
-local function draw(options, display)
+local function draw(options, display, maxY)
     if options.t == "button" then
         --if BUTTON
         if options.BG then display.setBackgroundColor(options.BG) else display.setBackgroundColor(colors.black) end
@@ -85,7 +86,24 @@ local function draw(options, display)
             if options.BG then display.setBackgroundColor(options.BG) else display.setBackgroundColor(colors.grey) end
             if options.FG then display.setBackgroundColor(options.FG) else display.setBackgroundColor(colors.white) end
         end
-        
+        local text = {}
+        local reverse = false
+        if not options.active then text = options["items"][options.selected] .. string.rep(" ",options.dx-string.len(options["items"][options.selected])) else
+            if maxY > options.y+table.len(options.items) then reverse = true end
+            if not reverse then
+                for i in pairs(options.items) do
+                    text[i] = options["items"][i]
+                end
+            else
+                for i in pairs(options.items) do
+                    text[table.len(options.items)-i+1] = options["items"][i]
+                end
+            end
+            for i in pairs(text) do
+                display.setCursorPos(options.x,options.y+i-1)
+                display.write(text[i])
+            end
+        end
     end
 end
 
@@ -93,4 +111,4 @@ local function onEvent(event)
     
 end
 ui.draw = draw
-ui.checkPress = checkPress
+ui.onEvent = onEvent
