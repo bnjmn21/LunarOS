@@ -32,6 +32,7 @@
 --      items
 --      selected        the index of the selected item(used internally)
 --      active          wether dropdown is shown(used internally)
+
 ui = {}
 
 local function draw(options, display, maxY)
