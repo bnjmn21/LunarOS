@@ -8,7 +8,6 @@
 --      FG
 --      txt             text of button(wrapps,does not support /n, instead use string.rep(" ",options.dx))
 --      onPress
---      ID              argument for onPress(mostly used so onPress knows which button was pressed)
 --  t=TEXTBOX
 --      x
 --      y
@@ -78,7 +77,7 @@ local function draw(options, display, maxY)
 
         display.setCursorPos(options.x,options.y)
         display.write(text)
-    elseif options.t == "dropDown" then
+    elseif options.t == "dropdown" then
         if options.active == true then
             if options.activeBG then display.setBackgroundColor(options.activeBG) else display.setBackgroundColor(options.BG or colors.lightGray) end
             if options.activeFG then display.setBackgroundColor(options.activeFG) else display.setBackgroundColor(options.FG or colors.white) end
@@ -92,11 +91,11 @@ local function draw(options, display, maxY)
             if maxY > options.y+table.len(options.items) then reverse = true end
             if not reverse then
                 for i in pairs(options.items) do
-                    text[i] = options["items"][i]
+                    text[i] = options["items"][i] .. string.rep(" ",options.dx-string.len(options["items"][i]))
                 end
             else
                 for i in pairs(options.items) do
-                    text[table.len(options.items)-i+1] = options["items"][i]
+                    text[table.len(options.items)-i+1] = options["items"][i] .. string.rep(" ",options.dx-string.len(options["items"][i]))
                 end
             end
             for i in pairs(text) do
@@ -107,8 +106,55 @@ local function draw(options, display, maxY)
     end
 end
 
-local function onEvent(event)
-    
+local function checkUI(event,UI,maxY)
+    local newUI = ui
+    if event[1] == "mouse_click" then
+        if event[2] == 1 then
+            for i in pairs(newUI) do
+                if newUI[i]["t"] == "button" then
+                    if event[3] >= newUI.x and event[3] < newUI.x+newUI.dx and event[4] >= newUI.y and event[4] < newUI.y+newUI.dy then
+                        newUI[i]["onPress"](i)
+                    end
+                elseif newUI[i]["t"] == "textBox" then
+                    if event[3] >= newUI.x and event[3] < newUI.x+newUI.dx and event[4] == newUI.y then
+                        newUI.active == not newUI.active
+                    end
+                elseif newUI[i]["t"] == "dropdown" then
+                    if not newUI[i]["active"] then
+                        if event[3] >= newUI.x and event[3] < newUI.x+newUI.dx and event[4] == newUI.y then
+                            active = true
+                        end
+                    else
+                        local reverse = false
+                        if maxY > newUI.y+table.len(newUI.items) then reverse = true end
+                        if (not reverse) and event[3] >= newUI.x and event[3] < newUI.x+newUI.dx and event[4] >= newUI.y and event[4] < newUI.y+table.len(newUI.items) then
+                            newUI.selected = event[4] - newUI.y + 1
+                        elseif reverse and event[3] >= newUI.x and event[3] < newUI.x+newUI.dx and event[4] <= newUI.y and event[4] > newUI.y-table.len(newUI.items) then
+                            newUI.selected = -(event[4] - newUI.y + 1)
+                        end
+                    end
+                end
+            end
+        end
+    elseif event[1] == "char" then
+        for i in pairs(newUI) do
+            if newUI[i]["t"] == "textBox" then
+                if newUI[i]["maxChar"] <= string.len(newUI[i]["input"]) and newUI[i]["active"] then
+                    newUI[i]["input"] = newUI[i]["input"] .. event[2]
+                end
+            end
+        end
+    elseif event[1] == "key" then
+        for i in pairs(newUI) do
+            if newUI[i]["t"] == "textBox" then
+                if newUI[i]["active"] then
+                    if event[2] == 259 then
+                        newUI[i]["input"] = string.sub(newUI[i]["input"],1,string.len(newUI[i]["input"])-1)
+                    end
+                end
+            end
+        end
+    end
 end
 ui.draw = draw
 ui.onEvent = onEvent
